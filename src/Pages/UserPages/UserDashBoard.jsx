@@ -134,9 +134,20 @@ function UserDashboard() {
   };
 
   const getWorkingDays = () => {
-    return serviceDetails?.workingDays || selectedService?.workingDays || [];
-  };
+  const days = serviceDetails?.workingDays || selectedService?.workingDays || [];
 
+  const order = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+  ];
+
+  return days.sort((a, b) => order.indexOf(a) - order.indexOf(b));
+};
   const handleViewSlots = async () => {
     if (!selectedService) {
       toast.warn('Please select a service first');
