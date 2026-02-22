@@ -42,13 +42,17 @@ import { useState } from "react";
   };
 
   const isDisabled = (d) => {
-    if (!d) return true;
-    const date = new Date(viewYear, viewMonth, d);
-    date.setHours(0, 0, 0, 0);
-    if (date < min) return true;
-    if (workingDays && workingDays.length > 0 && !enabledWeekdays.has(date.getDay())) return true;
-    return false;
-  };
+  if (!d) return true;
+  
+  const date = new Date(viewYear, viewMonth, d); // local midnight 
+  date.setHours(0, 0, 0, 0);
+  
+  if (date < today) return true;  // only disable PAST dates
+  
+  if (workingDays && workingDays.length > 0 && !enabledWeekdays.has(date.getDay())) return true;
+  
+  return false;
+};
 
   const isSelected = (d) => {
     if (!d || !value) return false;
