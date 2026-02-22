@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Axioscall from '../../Services/Axioscall'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 export default function AdminLogin() {
@@ -122,8 +122,8 @@ export default function AdminLogin() {
               />
             </div>
             <p>
-              <a href="/register" className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors duration-150">
-                Not an admin and don’t have an account yet? Create one here              </a>
+              <Link to="register" className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors duration-150">
+                Not an admin and don’t have an account yet? Create one here              </Link>
             </p>
           
             {error && (
