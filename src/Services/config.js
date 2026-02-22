@@ -1,0 +1,1 @@
+export const API_URL = ' https://appointmentbookingapi-1.onrender.com';
