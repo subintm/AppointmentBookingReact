@@ -247,21 +247,41 @@ function UserDashboard() {
       return;
     }
 
-    const fetchSlots = async () => {
-      try {
-        setLoading(true);
-        const url = `api/availability/getAvailabilityByServiceIdANDDate/${selectedService._id}/${selectedDate}`;
-        const res = await Axioscall('GET', url);
+  const fetchSlots = async () => {
+  try {
+    setLoading(true);
 
-        const slots = res.data?.AvailableSlots || [];
-        setAvailableSlots(slots);
-      } catch (err) {
-        toast.error('Failed to load slots for selected date');
-        setAvailableSlots([]);
-      } finally {
-        setLoading(false);
-      }
-    };
+    const url = `api/availability/getAvailabilityByServiceIdANDDate/${selectedService._id}/${selectedDate}`;
+    const res = await Axioscall('GET', url);
+
+    let slots = res.data?.AvailableSlots || [];
+    const isToday = res.data?.IsToday;
+
+    if (isToday) {
+      const now = new Date();
+      const currentHours = now.getHours();
+      const currentMinutes = now.getMinutes();
+
+      slots = slots.filter((slot) => {
+        const [hours, minutes] = slot.split(":").map(Number);
+
+        if (hours > currentHours) return true;
+        if (hours === currentHours && minutes > currentMinutes) return true;
+
+        return false;
+      });
+    }
+
+    console.log("Filtered Slots:", slots);
+    setAvailableSlots(slots);
+
+  } catch (err) {
+    toast.error('Failed to load slots for selected date');
+    setAvailableSlots([]);
+  } finally {
+    setLoading(false);
+  }
+};
 
     fetchSlots();
   }, [selectedService?._id, selectedDate]);
